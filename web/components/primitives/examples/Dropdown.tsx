@@ -24,7 +24,7 @@ export const DropdownExample = () => {
 				icon={<DrawingPinIcon className={iconClassName} />}
 				checked={dropdownToggle}
 				onCheckedChange={(value) => {
-					value !== "indeterminate" && setDropdownToggle(value);
+					setDropdownToggle(value);
 				}}
 			/>
 			<Dropdown.Item icon={<BookmarkIcon className={iconClassName} />} label="Label" />
