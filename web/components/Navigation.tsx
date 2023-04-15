@@ -1,6 +1,8 @@
+import { formatEther } from "@ethersproject/units";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useState } from "react";
 import * as Dropdown from "../components/primitives/Dropdown";
+import { useBalances } from "../hooks/useBalances";
 import { getAddChainParameters } from "../utils/chains";
 import { hooks, metaMask } from "../utils/metaMask";
 import { tw } from "../utils/tw";
@@ -53,6 +55,8 @@ export const Navigation = () => {
 	const ENSNames = useENSNames(provider);
 
 	const [error, setError] = useState<Error | undefined>(undefined);
+
+	const balances = useBalances(provider, accounts);
 
 	// attempt to connect eagerly on mount
 	useEffect(() => {
@@ -177,6 +181,15 @@ export const Navigation = () => {
 							{error ? "Try again?" : "Connect"}
 						</NavigationPrimitive.Button>
 					)}
+				</NavigationPrimitive.Item>
+				<NavigationPrimitive.Item>
+					<NavigationPrimitive.Text>
+						{accounts && accounts.length === 0
+							? "None"
+							: accounts?.map((account, i) => (
+									<ul key={account}>{balances?.[i] ? `Ξ${formatEther(balances[i])}` : null}</ul>
+							  ))}
+					</NavigationPrimitive.Text>
 				</NavigationPrimitive.Item>
 			</NavigationPrimitive.Root>
 		</RootWrapper>

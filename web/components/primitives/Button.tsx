@@ -43,7 +43,7 @@ export const buttonStyles = cva(
 				"primary": "bg-primary text-white hover:bg-primary-bold",
 				"primitive":
 					"bg-primitive-faint border border-primitive-edge text-primitive-type hover:bg-primitive",
-				"primitive-borderless": "bg-primitive-faint text-primitive-type hover:bg-primitive"
+				"primitive-borderless": "text-primitive-type hover:bg-primitive"
 			},
 			fontSize: {
 				md: "text-base",
