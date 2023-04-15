@@ -3,12 +3,14 @@ pragma solidity ^0.8.0;
 
 import "./EquityToken.sol";
 import "./OrderBook.sol";
+import "./VestingModule.sol";
 
 contract OrderBookFactory {
     event OrderBookDeployed(
         address indexed baseToken,
         address indexed quoteToken,
-        address indexed orderBook
+        address indexed orderBook,
+        address indexed vestingModule
     );
 
     // Constant quoteToken address
@@ -20,7 +22,9 @@ contract OrderBookFactory {
         string memory equityTokenName,
         string memory equityTokenSymbol,
         address[] memory recipients,
-        uint256[] memory amounts
+        uint256[] memory amounts,
+        uint256 cliffTime,
+        uint256 vestingTime
     ) external {
         require(
             recipients.length == amounts.length,
@@ -33,6 +37,8 @@ contract OrderBookFactory {
             equityTokenSymbol
         );
         OrderBook orderBook = new OrderBook(equityToken, quoteToken);
+        
+        VestingModule vestingModule = new VestingModule(recipients, amounts, cliffTime, vestingTime, address(equityToken));
 
         // Allocate tokens to recipients
         for (uint256 i = 0; i < recipients.length; i++) {
@@ -47,7 +53,8 @@ contract OrderBookFactory {
         emit OrderBookDeployed(
             address(equityToken),
             address(quoteToken),
-            address(orderBook)
+            address(orderBook),
+            address(vestingModule)
         );
     }
 }
