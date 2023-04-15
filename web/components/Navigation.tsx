@@ -1,3 +1,4 @@
+import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useState } from "react";
 import * as Dropdown from "../components/primitives/Dropdown";
 import { getAddChainParameters } from "../utils/chains";
@@ -6,11 +7,12 @@ import { tw } from "../utils/tw";
 import { Arbitrum } from "./icons/Arbitrum";
 import { Avalanch } from "./icons/Avalanch";
 import { EthereumIcon } from "./icons/Ethereum";
-import { MetaMaskIcon } from "./icons/MetaMask";
 import { Button } from "./primitives/Button";
 import * as NavigationPrimitive from "./primitives/Navigation";
 
 const RootWrapper = tw.div`fixed top-2 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center`;
+
+const cryptoIconClassName = "h-7 w-7 text-primitive-type-extra-faint";
 
 const iconClassName = "mr-2 h-7 w-7 text-primitive-type-extra-faint";
 
@@ -22,13 +24,13 @@ interface ChainInfo {
 
 const chainInfo: ChainInfo = {
 	1: {
-		icon: <EthereumIcon className={iconClassName} />
+		icon: <EthereumIcon className={cryptoIconClassName} />
 	},
 	43114: {
-		icon: <Avalanch className={iconClassName} />
+		icon: <Avalanch className={cryptoIconClassName} />
 	},
 	42161: {
-		icon: <Arbitrum className={iconClassName} />
+		icon: <Arbitrum className={cryptoIconClassName} />
 	}
 };
 
@@ -107,22 +109,17 @@ export const Navigation = () => {
 					<NavigationPrimitive.NextLink href="/">Home</NavigationPrimitive.NextLink>
 				</NavigationPrimitive.Item>
 				<NavigationPrimitive.Item>
-					<NavigationPrimitive.NextLink href="/components">Components</NavigationPrimitive.NextLink>
-				</NavigationPrimitive.Item>
-				<NavigationPrimitive.Item>
 					<Dropdown.Root
 						sideOffset={14}
 						trigger={
-							<Button shade="primitive-borderless" size="xs">
-								{(desiredChainId && chainInfo[desiredChainId]?.icon) ?? (
-									<MetaMaskIcon className={iconClassName} />
-								)}
-								Swap
+							<Button shade="primitive-borderless" size="xs" className="px-3">
+								{desiredChainId && chainInfo[desiredChainId].icon}
+								<CaretDownIcon className="ml-1 h-5 w-5 -mr-2" />
 							</Button>
 						}
 					>
 						<Dropdown.CheckboxItem
-							label="Ethereum"
+							label={<span className={activeChainId === 1 ? "font-bold" : ""}>Ethereum</span>}
 							icon={<EthereumIcon className={iconClassName} />}
 							checked={desiredChainId === 1}
 							onCheckedChange={(value) => {
@@ -131,15 +128,16 @@ export const Navigation = () => {
 						/>
 
 						<Dropdown.CheckboxItem
-							label="Avalanche"
+							label={<span className={activeChainId === 43114 ? "font-bold" : ""}>Avalanch</span>}
 							icon={<Avalanch className={iconClassName} />}
 							checked={desiredChainId === 43114}
 							onCheckedChange={(value) => {
 								if (value) setDesiredChainId(43114);
 							}}
 						/>
+
 						<Dropdown.CheckboxItem
-							label="Arbitrum"
+							label={<span className={activeChainId === 42161 ? "font-bold" : ""}>Arbitrum</span>}
 							icon={<Arbitrum className={iconClassName} />}
 							checked={desiredChainId === 42161}
 							onCheckedChange={(value) => {
@@ -164,7 +162,7 @@ export const Navigation = () => {
 									} else {
 										void metaMask.resetState();
 									}
-									setDesiredChainId(undefined);
+									setDesiredChainId(1);
 								}}
 							>
 								Disconnect
@@ -176,7 +174,7 @@ export const Navigation = () => {
 							onClick={() => (desiredChainId ? switchChain(desiredChainId) : null)}
 							disabled={isActivating || !desiredChainId}
 						>
-							Connect
+							{error ? "Try again?" : "Connect"}
 						</NavigationPrimitive.Button>
 					)}
 				</NavigationPrimitive.Item>
