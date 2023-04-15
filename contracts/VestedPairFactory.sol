@@ -6,12 +6,7 @@ import "./OrderBook.sol";
 import "./VestingModule.sol";
 
 contract OrderBookFactory {
-    event OrderBookDeployed(
-        address indexed baseToken,
-        address indexed quoteToken,
-        address indexed orderBook,
-        address indexed vestingModule
-    );
+    event OrderBookDeployed(address[4] deployedContracts);
 
     // Constant quoteToken address
     IERC20 public constant quoteToken =
@@ -37,8 +32,14 @@ contract OrderBookFactory {
             equityTokenSymbol
         );
         OrderBook orderBook = new OrderBook(equityToken, quoteToken);
-        
-        VestingModule vestingModule = new VestingModule(recipients, amounts, cliffTime, vestingTime, address(equityToken));
+
+        VestingModule vestingModule = new VestingModule(
+            recipients,
+            amounts,
+            cliffTime,
+            vestingTime,
+            address(equityToken)
+        );
 
         // Allocate tokens to recipients
         for (uint256 i = 0; i < recipients.length; i++) {
@@ -50,11 +51,13 @@ contract OrderBookFactory {
         // Transfer the remaining tokens to the deployer
         equityToken.transfer(msg.sender, equityToken.balanceOf(address(this)));
 
-        emit OrderBookDeployed(
+        address[4] memory deployedContracts = [
             address(equityToken),
             address(quoteToken),
             address(orderBook),
             address(vestingModule)
-        );
+        ];
+
+        emit OrderBookDeployed(deployedContracts);
     }
 }
