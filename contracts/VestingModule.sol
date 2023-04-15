@@ -82,7 +82,8 @@ contract VestingModule is Ownable {
     }
 
     function terminateVesting(address personAddress) public onlyOwner {
-        VestedTokens storage userTokens = addressTokens[msg.sender];
+        require(addressTokens[personAddress].claimableAmount != addressTokens[personAddress].claimedAmount);
+        VestedTokens storage userTokens = addressTokens[personAddress];
         uint256 currentTime = block.timestamp;
         uint256 elapsedTime = currentTime - startTime;
         uint256 claimablePercent;
