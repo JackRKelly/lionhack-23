@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import MetaMaskCard from "../components/MetaMaskCard";
 import { Navigation } from "../components/Navigation";
-import { Swapper } from "../components/primitives/examples/Swapper";
 import { Heading } from "../components/primitives/Heading";
 import { Image } from "../components/primitives/Image";
 import { InnerColumn, OuterColumn, PageWrapper, Section } from "../components/primitives/Layout";
@@ -50,8 +49,6 @@ const Home: NextPage = () => {
 
 				<Section>
 					<InnerColumn width="third">
-						<Swapper />
-
 						<MetaMaskCard />
 
 						<Text>

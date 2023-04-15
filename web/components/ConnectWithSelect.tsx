@@ -5,8 +5,32 @@ import { Network } from "@web3-react/network";
 import { WalletConnect } from "@web3-react/walletconnect";
 import { WalletConnect as WalletConnectV2 } from "@web3-react/walletconnect-v2";
 import { useCallback, useEffect, useState } from "react";
-
+import * as Dropdown from "../components/primitives/Dropdown";
 import { CHAINS, getAddChainParameters } from "../utils/chains";
+import { Arbitrum } from "./icons/Arbitrum";
+import { Avalanch } from "./icons/Avalanch";
+import { Ethereum } from "./icons/Ethereum";
+import { Button } from "./primitives/Button";
+
+const iconClassName = "mr-2 h-7 w-7 text-primitive-type-extra-faint";
+
+interface ChainInfo {
+	[key: number]: {
+		icon: React.ReactNode;
+	};
+}
+
+const chainInfo: ChainInfo = {
+	1: {
+		icon: <Ethereum className={iconClassName} />
+	},
+	43114: {
+		icon: <Avalanch className={iconClassName} />
+	},
+	42161: {
+		icon: <Arbitrum className={iconClassName} />
+	}
+};
 
 function ChainSelect({
 	activeChainId,
@@ -18,25 +42,40 @@ function ChainSelect({
 	chainIds: number[];
 }) {
 	return (
-		<select
-			value={activeChainId}
-			onChange={(event) => {
-				switchChain(Number(event.target.value));
-			}}
-			disabled={switchChain === undefined}
+		<Dropdown.Root
+			trigger={
+				<Button>
+					{chainInfo[activeChainId]?.icon}
+					Swap
+				</Button>
+			}
 		>
-			<option hidden disabled selected={activeChainId === undefined}>
-				Select chain
-			</option>
-			<option value={-1} selected={activeChainId === -1}>
-				Default
-			</option>
-			{chainIds.map((chainId) => (
-				<option key={chainId} value={chainId} selected={chainId === activeChainId}>
-					{CHAINS[chainId]?.name ?? chainId}
-				</option>
-			))}
-		</select>
+			<Dropdown.CheckboxItem
+				label="Ethereum"
+				icon={<Ethereum className={iconClassName} />}
+				checked={activeChainId === 1}
+				onCheckedChange={(value) => {
+					if (value) switchChain(1);
+				}}
+			/>
+
+			<Dropdown.CheckboxItem
+				label="Avalanche"
+				icon={<Avalanch className={iconClassName} />}
+				checked={activeChainId === 43114}
+				onCheckedChange={(value) => {
+					if (value) switchChain(43114);
+				}}
+			/>
+			<Dropdown.CheckboxItem
+				label="Arbitrum"
+				icon={<Arbitrum className={iconClassName} />}
+				checked={activeChainId === 42161}
+				onCheckedChange={(value) => {
+					if (value) switchChain(42161);
+				}}
+			/>
+		</Dropdown.Root>
 	);
 }
 
