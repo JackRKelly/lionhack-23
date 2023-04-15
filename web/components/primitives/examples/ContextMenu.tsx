@@ -23,7 +23,7 @@ export const ContextMenuExample = () => {
 				icon={<DrawingPinIcon className={iconClassName} />}
 				checked={contextMenuToggle}
 				onCheckedChange={(value) => {
-					value !== "indeterminate" && setContextMenuToggle(value);
+					setContextMenuToggle(value);
 				}}
 			/>
 			<ContextMenu.Item icon={<BookmarkIcon className={iconClassName} />} label="Label" />

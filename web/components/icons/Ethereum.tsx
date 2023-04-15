@@ -2,7 +2,7 @@ interface Props {
 	className?: string;
 }
 
-export const Etherium = (props: Props) => {
+export const Ethereum = (props: Props) => {
 	const { className } = props;
 
 	return (

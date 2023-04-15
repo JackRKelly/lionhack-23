@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import MetaMaskCard from "../components/MetaMaskCard";
 import { Navigation } from "../components/Navigation";
 import { Swapper } from "../components/primitives/examples/Swapper";
 import { Heading } from "../components/primitives/Heading";
@@ -50,6 +51,9 @@ const Home: NextPage = () => {
 				<Section>
 					<InnerColumn width="third">
 						<Swapper />
+
+						<MetaMaskCard />
+
 						<Text>
 							When starting a new project you may spend weeks creating the foundation of your
 							app/design system.{" "}

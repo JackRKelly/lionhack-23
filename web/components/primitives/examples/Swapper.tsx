@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { Arbitrum } from "../../icons/Arbitrum";
 import { Avalanch } from "../../icons/Avalanch";
-import { Etherium } from "../../icons/Etherium";
+import { Ethereum } from "../../icons/Ethereum";
 import { Button } from "../Button";
 import * as Dropdown from "../Dropdown";
 
 enum Crypto {
-	Etherium,
+	Ethereum,
 	Avalanch,
 	Arbitrum
 }
 
 export const Swapper = () => {
-	const [selected, setSelected] = useState<Crypto>(Crypto.Etherium);
+	const [selected, setSelected] = useState<Crypto>(Crypto.Ethereum);
 
 	const iconClassName = "mr-2 h-7 w-7 text-primitive-type-extra-faint";
 
@@ -21,8 +21,8 @@ export const Swapper = () => {
 			trigger={
 				<Button>
 					{(() => {
-						if (selected === Crypto.Etherium) {
-							return <Etherium className={iconClassName} />;
+						if (selected === Crypto.Ethereum) {
+							return <Ethereum className={iconClassName} />;
 						} else if (selected === Crypto.Avalanch) {
 							return <Avalanch className={iconClassName} />;
 						} else {
@@ -34,11 +34,11 @@ export const Swapper = () => {
 			}
 		>
 			<Dropdown.CheckboxItem
-				label="Etherium"
-				icon={<Etherium className={iconClassName} />}
-				checked={selected === Crypto.Etherium}
+				label="Ethereum"
+				icon={<Ethereum className={iconClassName} />}
+				checked={selected === Crypto.Ethereum}
 				onCheckedChange={(value) => {
-					if (value) setSelected(Crypto.Etherium);
+					if (value) setSelected(Crypto.Ethereum);
 				}}
 			/>
 
