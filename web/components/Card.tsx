@@ -1,9 +1,5 @@
 import type { Web3ReactHooks } from "@web3-react/core";
-import type { GnosisSafe } from "@web3-react/gnosis-safe";
 import type { MetaMask } from "@web3-react/metamask";
-import type { Network } from "@web3-react/network";
-import type { WalletConnect } from "@web3-react/walletconnect";
-import type { WalletConnect as WalletConnectV2 } from "@web3-react/walletconnect-v2";
 
 import { getName } from "../utils";
 import { tw } from "../utils/tw";
@@ -15,7 +11,7 @@ import { Status } from "./Status";
 const CardWrapper = tw.div`p-3 border rounded-md bg-app inline-block`;
 
 interface Props {
-	connector: MetaMask | WalletConnect | WalletConnectV2 | Network | GnosisSafe;
+	connector: MetaMask;
 	activeChainId: ReturnType<Web3ReactHooks["useChainId"]>;
 	chainIds?: ReturnType<Web3ReactHooks["useChainId"]>[];
 	isActivating: ReturnType<Web3ReactHooks["useIsActivating"]>;

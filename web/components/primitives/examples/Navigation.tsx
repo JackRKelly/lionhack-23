@@ -28,6 +28,7 @@ export const NavigationExample = () => {
 			<NavigationPrimitive.Item>
 				<NavigationPrimitive.NextLink href="/components">Components</NavigationPrimitive.NextLink>
 			</NavigationPrimitive.Item>
+
 			<NavigationPrimitive.Item>
 				<NavigationPrimitive.Trigger>Resources</NavigationPrimitive.Trigger>
 				<NavigationPrimitive.Content>
@@ -65,6 +66,9 @@ export const NavigationExample = () => {
 						</SkeletonGrid>
 					</SkeletonGridWrapper>
 				</NavigationPrimitive.Content>
+			</NavigationPrimitive.Item>
+			<NavigationPrimitive.Item>
+				<NavigationPrimitive.Trigger>Connect</NavigationPrimitive.Trigger>
 			</NavigationPrimitive.Item>
 		</NavigationPrimitive.Root>
 	);

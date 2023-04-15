@@ -37,6 +37,8 @@ export const Link = tw(
 	NavigationMenuPrimitive.Link
 )`cursor-pointer rounded-md px-3 py-2 hover:bg-primitive text-sm font-medium text-primitive-type focus:outline-none focus-visible:ring focus-visible:ring-highlight transition-link block`;
 
+export const Button = tw.button`cursor-pointer rounded-md px-3 py-2 hover:bg-primitive text-sm font-medium text-primitive-type focus:outline-none focus-visible:ring focus-visible:ring-highlight transition-link block`;
+
 interface ItemProps extends PropsWithChildren, NavigationMenuPrimitive.NavigationMenuItemProps {}
 
 export const Item = (props: ItemProps) => {

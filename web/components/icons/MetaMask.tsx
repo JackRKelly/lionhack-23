@@ -2,7 +2,7 @@ interface Props {
 	className?: string;
 }
 
-export const MetaMask = (props: Props) => {
+export const MetaMaskIcon = (props: Props) => {
 	const { className } = props;
 
 	return (

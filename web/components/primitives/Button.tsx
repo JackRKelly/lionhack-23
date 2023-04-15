@@ -35,13 +35,15 @@ export const buttonStyles = cva(
 			},
 			size: {
 				md: "px-4 py-2",
-				sm: "px-2 py-2"
+				sm: "px-2 py-2",
+				xs: "px-1 py-1"
 			},
 			shade: {
-				none: "",
-				primary: "bg-primary text-white hover:bg-primary-bold",
-				primitive:
-					"bg-primitive-faint border border-primitive-edge text-primitive-type hover:bg-primitive"
+				"none": "",
+				"primary": "bg-primary text-white hover:bg-primary-bold",
+				"primitive":
+					"bg-primitive-faint border border-primitive-edge text-primitive-type hover:bg-primitive",
+				"primitive-borderless": "bg-primitive-faint text-primitive-type hover:bg-primitive"
 			},
 			fontSize: {
 				md: "text-base",
