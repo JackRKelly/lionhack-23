@@ -2,31 +2,28 @@ interface Props {
 	className?: string;
 }
 
-export const Ethereum = (props: Props) => {
+export const EthereumIcon = (props: Props) => {
 	const { className } = props;
 
 	return (
 		<svg
-			width="84"
-			height="84"
-			viewBox="0 0 84 84"
+			width="732"
+			height="733"
+			viewBox="0 0 732 733"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			className={className}
 		>
-			<circle cx="42" cy="42" r="42" fill="#F6F6F6" />
 			<path
-				d="M41.9969 15L41.6255 16.2306V51.9366L41.9969 52.2981L58.9895 42.501L41.9969 15Z"
-				fill="#343434"
+				d="M366.2 732.3C568.226 732.3 732 568.526 732 366.5C732 164.474 568.226 0.699951 366.2 0.699951C164.174 0.699951 0.400024 164.474 0.400024 366.5C0.400024 568.526 164.174 732.3 366.2 732.3Z"
+				fill="#627EEA"
 			/>
-			<path d="M41.993 15L25 42.501L41.993 52.2981V34.9674V15Z" fill="#8C8C8C" />
-			<path
-				d="M41.9969 55.436L41.7876 55.685V68.404L41.9969 69.0001L58.9999 45.644L41.9969 55.436Z"
-				fill="#3C3C3B"
-			/>
-			<path d="M41.993 69.0001V55.436L25 45.644L41.993 69.0001Z" fill="#8C8C8C" />
-			<path d="M41.9907 52.2975L58.9833 42.5005L41.9907 34.9668V52.2975Z" fill="#141414" />
-			<path d="M25 42.5005L41.993 52.2975V34.9668L25 42.5005Z" fill="#393939" />
+			<path d="M377.6 92.1V294.9L549 371.5L377.6 92.1Z" fill="white" fill-opacity="0.602" />
+			<path d="M377.6 92.1L206.2 371.5L377.6 294.9V92.1Z" fill="white" />
+			<path d="M377.6 502.9V640.7L549.1 403.4L377.6 502.9Z" fill="white" fill-opacity="0.602" />
+			<path d="M377.6 640.7V502.9L206.2 403.4L377.6 640.7Z" fill="white" />
+			<path d="M377.6 471L549 371.5L377.6 294.9V471Z" fill="white" fill-opacity="0.2" />
+			<path d="M206.2 371.5L377.6 471V294.9L206.2 371.5Z" fill="white" fill-opacity="0.602" />
 		</svg>
 	);
 };

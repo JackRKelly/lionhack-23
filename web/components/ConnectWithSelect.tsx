@@ -5,11 +5,12 @@ import { Network } from "@web3-react/network";
 import { WalletConnect } from "@web3-react/walletconnect";
 import { WalletConnect as WalletConnectV2 } from "@web3-react/walletconnect-v2";
 import { useCallback, useEffect, useState } from "react";
+import { MetaMask as MetaMaskIcon } from "../components/icons/MetaMask";
 import * as Dropdown from "../components/primitives/Dropdown";
 import { CHAINS, getAddChainParameters } from "../utils/chains";
 import { Arbitrum } from "./icons/Arbitrum";
 import { Avalanch } from "./icons/Avalanch";
-import { Ethereum } from "./icons/Ethereum";
+import { EthereumIcon } from "./icons/Ethereum";
 import { Button } from "./primitives/Button";
 
 const iconClassName = "mr-2 h-7 w-7 text-primitive-type-extra-faint";
@@ -22,7 +23,7 @@ interface ChainInfo {
 
 const chainInfo: ChainInfo = {
 	1: {
-		icon: <Ethereum className={iconClassName} />
+		icon: <EthereumIcon className={iconClassName} />
 	},
 	43114: {
 		icon: <Avalanch className={iconClassName} />
@@ -45,14 +46,14 @@ function ChainSelect({
 		<Dropdown.Root
 			trigger={
 				<Button>
-					{chainInfo[activeChainId]?.icon}
+					{chainInfo[activeChainId]?.icon ?? <MetaMaskIcon className={iconClassName} />}
 					Swap
 				</Button>
 			}
 		>
 			<Dropdown.CheckboxItem
 				label="Ethereum"
-				icon={<Ethereum className={iconClassName} />}
+				icon={<EthereumIcon className={iconClassName} />}
 				checked={activeChainId === 1}
 				onCheckedChange={(value) => {
 					if (value) switchChain(1);

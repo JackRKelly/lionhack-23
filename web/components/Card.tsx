@@ -6,10 +6,13 @@ import type { WalletConnect } from "@web3-react/walletconnect";
 import type { WalletConnect as WalletConnectV2 } from "@web3-react/walletconnect-v2";
 
 import { getName } from "../utils";
+import { tw } from "../utils/tw";
 import { Accounts } from "./Accounts";
 import { Chain } from "./Chain";
 import { ConnectWithSelect } from "./ConnectWithSelect";
 import { Status } from "./Status";
+
+const CardWrapper = tw.div`p-3 border rounded-md bg-app inline-block`;
 
 interface Props {
 	connector: MetaMask | WalletConnect | WalletConnectV2 | Network | GnosisSafe;
@@ -37,19 +40,7 @@ export function Card({
 	provider
 }: Props) {
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				justifyContent: "space-between",
-				width: "20rem",
-				padding: "1rem",
-				margin: "1rem",
-				overflow: "auto",
-				border: "1px solid",
-				borderRadius: "1rem"
-			}}
-		>
+		<CardWrapper>
 			<b>{getName(connector)}</b>
 			<div style={{ marginBottom: "1rem" }}>
 				<Status isActivating={isActivating} isActive={isActive} error={error} />
@@ -68,6 +59,6 @@ export function Card({
 				error={error}
 				setError={setError}
 			/>
-		</div>
+		</CardWrapper>
 	);
 }
