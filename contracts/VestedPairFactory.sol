@@ -38,7 +38,8 @@ contract OrderBookFactory {
             amounts,
             cliffTime,
             vestingTime,
-            address(equityToken)
+            address(equityToken),
+            msg.sender
         );
 
         // Allocate tokens to recipients

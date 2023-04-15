@@ -2,8 +2,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract VestingModule {
+contract VestingModule is Ownable {
     struct VestedTokens {
         uint256 claimableAmount;
         uint256 claimedAmount;
@@ -21,7 +22,8 @@ contract VestingModule {
         uint256[] memory _amounts,
         uint256 _cliffTime,
         uint256 _vestingTime,
-        address equityTokenAddress
+        address equityTokenAddress,
+        address newOwner
     ) {
         require(
             _recipients.length == _amounts.length,
@@ -37,6 +39,7 @@ contract VestingModule {
         cliffTime = _cliffTime;
         vestingTime = _vestingTime;
         equityToken = IERC20(equityTokenAddress);
+        transferOwnership(newOwner);
     }
 
     // Allows a recipient to claim their vested tokens
