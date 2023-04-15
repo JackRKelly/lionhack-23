@@ -88,7 +88,7 @@ export const CheckboxItem = (props: CheckboxItemProps) => {
 		<_CheckboxItem {...{ checked, ...rest }}>
 			{(() => {
 				if (checked) {
-					return checkedIcon;
+					return checkedIcon ?? icon;
 				} else {
 					return icon;
 				}
