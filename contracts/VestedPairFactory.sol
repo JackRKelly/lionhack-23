@@ -16,9 +16,9 @@ contract OrderBookFactory {
         IERC20(0x0000000000000000000000000000000000001010);
 
     function createOrderBook(
-        uint256 baseTokenInitialSupply, // supply of tokens in ether
-        string memory baseTokenName,
-        string memory baseTokenSymbol,
+        uint256 equityTokenInitialSupply, // supply of tokens in ether
+        string memory equityTokenName,
+        string memory equityTokenSymbol,
         address[] memory recipients,
         uint256[] memory amounts
     ) external {
@@ -26,26 +26,26 @@ contract OrderBookFactory {
             recipients.length == amounts.length,
             "Recipients and amounts length mismatch"
         );
-        uint256 baseTokenSupplyEther = baseTokenInitialSupply * (1 ether);
-        BaseToken baseToken = new BaseToken(
-            baseTokenSupplyEther,
-            baseTokenName,
-            baseTokenSymbol
+        uint256 equityTokenSupplyEther = equityTokenInitialSupply * (1 ether);
+        EquityToken equityToken = new EquityToken(
+            equityTokenSupplyEther,
+            equityTokenName,
+            equityTokenSymbol
         );
-        OrderBook orderBook = new OrderBook(baseToken, quoteToken);
+        OrderBook orderBook = new OrderBook(equityToken, quoteToken);
 
         // Allocate tokens to recipients
         for (uint256 i = 0; i < recipients.length; i++) {
             address recipient = recipients[i];
             uint256 amount = amounts[i];
-            baseToken.transfer(recipient, amount);
+            equityToken.transfer(recipient, amount);
         }
 
         // Transfer the remaining tokens to the deployer
-        baseToken.transfer(msg.sender, baseToken.balanceOf(address(this)));
+        equityToken.transfer(msg.sender, equityToken.balanceOf(address(this)));
 
         emit OrderBookDeployed(
-            address(baseToken),
+            address(equityToken),
             address(quoteToken),
             address(orderBook)
         );
