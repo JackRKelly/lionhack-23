@@ -80,4 +80,25 @@ contract VestingModule is Ownable {
             require(equityToken.transfer(msg.sender, unclaimedAmount));
         }
     }
+
+    function terminateVesting(address personAddress) public onlyOwner {
+        require(addressTokens[personAddress].claimableAmount != addressTokens[personAddress].claimedAmount);
+        VestedTokens storage userTokens = addressTokens[personAddress];
+        uint256 currentTime = block.timestamp;
+        uint256 elapsedTime = currentTime - startTime;
+        uint256 claimablePercent;
+        if (startTime + cliffTime > currentTime) {
+            require(equityToken.transfer(owner(), userTokens.claimableAmount));
+        }
+        else {
+            claimablePercent = (elapsedTime * 1e18) / vestingTime;
+            uint256 claimableAmount = (userTokens.claimableAmount *
+                claimablePercent) / 1e18;
+            uint256 unclaimedAmount = claimableAmount -
+                userTokens.claimedAmount;
+            
+            userTokens.claimedAmount = claimableAmount;
+            require(equityToken.transfer(personAddress, unclaimedAmount) && equityToken.transfer(owner(), userTokens.claimableAmount - userTokens.claimedAmount));
+        }
+    }
 }
