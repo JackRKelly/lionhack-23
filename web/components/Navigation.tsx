@@ -101,7 +101,7 @@ export const Navigation = () => {
 			<NavigationPrimitive.Root>
 				<NavigationPrimitive.Item>
 					<NavigationPrimitive.NextLink href="/" className="!font-bold">
-						Vestera
+						Vestra
 					</NavigationPrimitive.NextLink>
 				</NavigationPrimitive.Item>
 
