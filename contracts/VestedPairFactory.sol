@@ -5,8 +5,8 @@ import "./EquityToken.sol";
 import "./OrderBook.sol";
 import "./VestingModule.sol";
 
-contract OrderBookFactory {
-    event OrderBookDeployed(address[4] deployedContracts);
+contract VestedPairFactory {
+    event VestedPairDeployed(address[4] deployedContracts);
 
     // Constant quoteToken address
     IERC20 public constant quoteToken =
@@ -32,7 +32,10 @@ contract OrderBookFactory {
             total += amounts[i];
         }
 
-        require(total <= equityTokenInitialSupply, "Cannot distribute more tokens than initial supply");
+        require(
+            total <= equityTokenInitialSupply,
+            "Cannot distribute more tokens than initial supply"
+        );
 
         uint256 equityTokenSupplyEther = equityTokenInitialSupply * (1 ether);
         EquityToken equityToken = new EquityToken(
@@ -63,6 +66,6 @@ contract OrderBookFactory {
             address(vestingModule)
         ];
 
-        emit OrderBookDeployed(deployedContracts);
+        emit VestedPairDeployed(deployedContracts);
     }
 }
