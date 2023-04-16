@@ -5,7 +5,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import VestedPairFactoryJson from "../../artifacts/contracts/VestedPairFactory.sol/VestedPairFactory.json";
+import VestedPairFactoryJson from "../abi/VestedPairFactory.json";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Navigation } from "../components/Navigation";
 import { Button } from "../components/primitives/Button";
