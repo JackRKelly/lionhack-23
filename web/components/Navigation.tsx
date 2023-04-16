@@ -112,6 +112,40 @@ export const Navigation = () => {
 				<NavigationPrimitive.Item>
 					<NavigationPrimitive.NextLink href="/">Home</NavigationPrimitive.NextLink>
 				</NavigationPrimitive.Item>
+
+				<NavigationPrimitive.Item>
+					{isActive ? (
+						error ? (
+							<NavigationPrimitive.Button
+								onClick={() => (desiredChainId ? switchChain(desiredChainId) : null)}
+							>
+								Try again?
+							</NavigationPrimitive.Button>
+						) : (
+							<NavigationPrimitive.Button
+								onClick={() => {
+									if (metaMask?.deactivate) {
+										void metaMask.deactivate();
+									} else {
+										void metaMask.resetState();
+									}
+									setDesiredChainId(1);
+								}}
+							>
+								Disconnect
+							</NavigationPrimitive.Button>
+						)
+					) : (
+						<NavigationPrimitive.Button
+							className="whitespace-nowrap"
+							onClick={() => (desiredChainId ? switchChain(desiredChainId) : null)}
+							disabled={isActivating || !desiredChainId}
+						>
+							{error ? "Try again?" : "Connect"}
+						</NavigationPrimitive.Button>
+					)}
+				</NavigationPrimitive.Item>
+
 				<NavigationPrimitive.Item>
 					<Dropdown.Root
 						sideOffset={14}
@@ -150,47 +184,17 @@ export const Navigation = () => {
 						/>
 					</Dropdown.Root>
 				</NavigationPrimitive.Item>
-				<NavigationPrimitive.Item>
-					{isActive ? (
-						error ? (
-							<NavigationPrimitive.Button
-								onClick={() => (desiredChainId ? switchChain(desiredChainId) : null)}
-							>
-								Try again?
-							</NavigationPrimitive.Button>
-						) : (
-							<NavigationPrimitive.Button
-								onClick={() => {
-									if (metaMask?.deactivate) {
-										void metaMask.deactivate();
-									} else {
-										void metaMask.resetState();
-									}
-									setDesiredChainId(1);
-								}}
-							>
-								Disconnect
-							</NavigationPrimitive.Button>
-						)
-					) : (
-						<NavigationPrimitive.Button
-							className="whitespace-nowrap"
-							onClick={() => (desiredChainId ? switchChain(desiredChainId) : null)}
-							disabled={isActivating || !desiredChainId}
-						>
-							{error ? "Try again?" : "Connect"}
-						</NavigationPrimitive.Button>
-					)}
-				</NavigationPrimitive.Item>
-				<NavigationPrimitive.Item>
-					<NavigationPrimitive.Text>
-						{accounts && accounts.length === 0
-							? "None"
-							: accounts?.map((account, i) => (
+
+				{accounts && accounts.length !== 0 && (
+					<NavigationPrimitive.Item>
+						<NavigationPrimitive.Text>
+							{accounts &&
+								accounts.map((account, i) => (
 									<ul key={account}>{balances?.[i] ? `Ξ${formatEther(balances[i])}` : null}</ul>
-							  ))}
-					</NavigationPrimitive.Text>
-				</NavigationPrimitive.Item>
+								))}
+						</NavigationPrimitive.Text>
+					</NavigationPrimitive.Item>
+				)}
 			</NavigationPrimitive.Root>
 		</RootWrapper>
 	);
