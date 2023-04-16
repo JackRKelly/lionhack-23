@@ -25,6 +25,15 @@ contract OrderBookFactory {
             recipients.length == amounts.length,
             "Recipients and amounts length mismatch"
         );
+
+        uint256 total = 0;
+        // Allocate tokens to recipients
+        for (uint256 i = 0; i < amounts.length; i++) {
+            total += amounts[i];
+        }
+
+        require(total <= equityTokenInitialSupply, "Cannot distribute more tokens than initial supply");
+
         uint256 equityTokenSupplyEther = equityTokenInitialSupply * (1 ether);
         EquityToken equityToken = new EquityToken(
             equityTokenSupplyEther,
@@ -42,12 +51,7 @@ contract OrderBookFactory {
             msg.sender
         );
 
-        // Allocate tokens to recipients
-        for (uint256 i = 0; i < recipients.length; i++) {
-            address recipient = recipients[i];
-            uint256 amount = amounts[i];
-            equityToken.transfer(recipient, amount);
-        }
+        equityToken.transfer(address(vestingModule), total * (1 ether));
 
         // Transfer the remaining tokens to the deployer
         equityToken.transfer(msg.sender, equityToken.balanceOf(address(this)));
