@@ -18,6 +18,12 @@ const CELO: AddEthereumChainParameter["nativeCurrency"] = {
 	decimals: 18
 };
 
+const AVAX: AddEthereumChainParameter["nativeCurrency"] = {
+	name: "Avax",
+	symbol: "AVAX",
+	decimals: 18
+};
+
 interface BasicChainInformation {
 	urls: string[];
 	name: string;
@@ -130,6 +136,12 @@ export const TESTNET_CHAINS: ChainConfig = {
 		urls: ["https://alfajores-forno.celo-testnet.org"],
 		name: "Celo Alfajores",
 		nativeCurrency: CELO,
+		blockExplorerUrls: ["https://alfajores-blockscout.celo-testnet.org"]
+	},
+	43114: {
+		urls: ["https://api.avax.network/ext/bc/C/rpc"],
+		name: "Avalanche",
+		nativeCurrency: AVAX,
 		blockExplorerUrls: ["https://alfajores-blockscout.celo-testnet.org"]
 	},
 	1337: {
