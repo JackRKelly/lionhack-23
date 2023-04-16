@@ -36,7 +36,7 @@ const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 		<ColumnOfferItem>
 			<div className="border-r border-primitive-edge inline-flex flex-row items-center mr-2 pr-2 w-14">
 				<span
-					className="text-xl font-semibold tracking-tight text-primitive-type"
+					className="text-xl font-medium tracking-tight text-primitive-type"
 					suppressHydrationWarning
 				>
 					{count}
