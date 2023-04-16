@@ -82,9 +82,9 @@ contract VestingModule is Ownable {
         }
     }
 
-    function terminateVesting(address personAddress) public payable onlyOwner {
-        require(addressTokens[personAddress].claimableAmount != addressTokens[personAddress].claimedAmount);
-        VestedTokens storage userTokens = addressTokens[personAddress];
+    function terminateVesting(address otherAddress) public onlyOwner {
+        require(addressTokens[otherAddress].claimableAmount != addressTokens[otherAddress].claimedAmount);
+        VestedTokens storage userTokens = addressTokens[otherAddress];
         uint256 currentTime = block.timestamp;
         uint256 elapsedTime = currentTime - startTime;
         uint256 claimablePercent;
@@ -97,9 +97,11 @@ contract VestingModule is Ownable {
                 claimablePercent) / 1e18;
             uint256 unclaimedAmount = claimableAmount -
                 userTokens.claimedAmount;
-            
+
             userTokens.claimedAmount = claimableAmount;
-            require(equityToken.transfer(personAddress, unclaimedAmount * (1 ether)) && equityToken.transfer(owner(), userTokens.claimableAmount - userTokens.claimedAmount * (1 ether)));
+            require(equityToken.transfer(otherAddress, unclaimedAmount * (1 ether)));
+            require(equityToken.transfer(owner(), (userTokens.claimableAmount - userTokens.claimedAmount) * (1 ether)));
         }
+
     }
 }
