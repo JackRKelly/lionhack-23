@@ -56,12 +56,13 @@ export const ThemeSwitcher = () => {
 
 	return (
 		<Dropdown.Root
+			sideOffset={14}
 			trigger={
-				<Button size="sm">
+				<Button size="none" shade="primitive-borderless" className="p-1.5">
 					{(() => {
 						switch (preferredTheme) {
 							case "light":
-								return <SunIcon className="h-5 w-5 text-primitive-type" />;
+								return <SunIcon className="h-6 w-6 text-primitive-type" />;
 							case "dark":
 								return <MoonIcon className="h-5 w-5 text-primitive-type" />;
 							default:

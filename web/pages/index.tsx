@@ -17,20 +17,20 @@ const ColumnOfferItem = tw.div`block pb-1 border-b border-primitive-edge-faint l
 const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 	return (
 		<ColumnOfferItem>
-			<div className="border-r inline-flex flex-row items-center mr-2 pr-2 w-14">
+			<div className="border-r border-primitive-edge inline-flex flex-row items-center mr-2 pr-2 w-14">
 				<span
 					className="text-xl font-semibold tracking-tight text-primitive-type"
 					suppressHydrationWarning
 				>
-					{Math.ceil(Math.random() * 999)}
+					{Math.ceil(Math.random() * 5)}
 					<span className="text-base ml-px text-primitive-type">x</span>
 				</span>
 			</div>
-			<div className="inline-flex flex-row items-center border-r mr-2 pr-2 w-32">
+			<div className="inline-flex flex-row items-center border-r border-primitive-edge mr-2 pr-2 w-32">
 				<div>
 					<span className="text-xs align-super text-primitive-type">$</span>
 					<div className="text-xl inline-block text-primitive-type" suppressHydrationWarning>
-						{(Math.random() * 99).toFixed(2)}
+						{(Math.random() * 5).toFixed(2)}
 					</div>
 					<span className="text-xs text-primitive-type-faint">
 						<span className="mx-0.5">/</span> token
@@ -46,10 +46,10 @@ const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 						className={clsx("text-xl inline-block", isBuy ? "text-red-600" : "text-green-600")}
 						suppressHydrationWarning
 					>
-						{Math.ceil(Math.random() * 99999)}
+						{(Math.random() * 50).toFixed(2)}
 					</div>
 					<span className="text-primitive-type-extra-faint font-light mx-1">/</span>
-					<span suppressHydrationWarning>{(Math.random() * 0.99).toFixed(2)} Volume</span>
+					<span suppressHydrationWarning>{(Math.random() * 0.08).toFixed(2)} Volume</span>
 				</span>
 			</div>
 		</ColumnOfferItem>
@@ -89,7 +89,7 @@ const Home: NextPage = () => {
 					<InnerColumn className="py-10 md:py-20 lg:scroll-py-32">
 						<Heading className="relative !text-white text-center" size="xxl" weight="semibold">
 							The future of <br />
-							user ownership
+							ownership
 						</Heading>
 					</InnerColumn>
 				</div>

@@ -7,7 +7,7 @@ const _Root = tw(NavigationMenuPrimitive.Root)`relative`;
 
 const _List = tw(
 	NavigationMenuPrimitive.List
-)`border border-primitive-edge flex flex-row space-x-2 rounded-lg bg-primitive-faint p-2 backdrop-blur bg-opacity-[85%]`;
+)`border border-primitive-edge flex flex-row items-center space-x-2 rounded-lg bg-primitive-faint p-2 backdrop-blur bg-opacity-[85%]`;
 
 const _Viewport = tw(
 	NavigationMenuPrimitive.Viewport
