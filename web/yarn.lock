@@ -1775,6 +1775,15 @@
   dependencies:
     zustand "^4.3.5"
 
+"@web3-react/url@^8.0.0-beta.0":
+  version "8.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@web3-react/url/-/url-8.0.0-beta.0.tgz#679e2a00e31fa69f56ac5b57ea9c87ead4d89057"
+  integrity sha512-xZ7ZfZPYjhvlHOiam1dsBN5InqwjeODnz42dZ6EWT/JuTGrJSSrbPsClxn1R51YLh417ytFC2UY5lih6kM/S2Q==
+  dependencies:
+    "@ethersproject/experimental" "^5.5.0"
+    "@ethersproject/providers" "^5.5.1"
+    "@web3-react/types" "^8.0.0-beta.0"
+
 "@web3-react/walletconnect-v2@^8.1.1-beta.0":
   version "8.1.1-beta.0"
   resolved "https://registry.yarnpkg.com/@web3-react/walletconnect-v2/-/walletconnect-v2-8.1.1-beta.0.tgz#b45827f477af9f0b6bd9e1558db37156a1349786"
