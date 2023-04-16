@@ -1,9 +1,14 @@
 import clsx from "clsx";
+import { Contract, ethers, Signer } from "ethers";
 import type { NextPage } from "next";
+import { useEffect, useState } from "react";
+import VestedPairFactoryJson from "../../artifacts/contracts/VestedPairFactory.sol/VestedPairFactory.json";
 import { Navigation } from "../components/Navigation";
+import { Button } from "../components/primitives/Button";
 import { Heading } from "../components/primitives/Heading";
 import { Image } from "../components/primitives/Image";
 import { InnerColumn, OuterColumn, PageWrapper, Section } from "../components/primitives/Layout";
+import { hooks } from "../utils/metaMask";
 import { tw } from "../utils/tw";
 
 const Column = tw.div`flex-1`;
@@ -57,6 +62,104 @@ const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 };
 
 const Home: NextPage = () => {
+	const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider, useENSNames } = hooks;
+
+	const [signer, setSigner] = useState<Signer>();
+	const [greeterContract, setGreeterContract] = useState<Contract>();
+	const [greeterContractAddr, setGreeterContractAddr] = useState<string>("");
+	const [greeting, setGreeting] = useState<string>("");
+	const [greetingInput, setGreetingInput] = useState<string>("");
+	const provider = useProvider();
+
+	useEffect((): void => {
+		setSigner(provider?.getSigner());
+	}, [provider]);
+
+	useEffect((): void => {
+		if (!greeterContract) {
+			return;
+		}
+
+		async function getGreeting(greeterContract: Contract): Promise<void> {
+			const _greeting = await greeterContract.greet();
+
+			if (_greeting !== greeting) {
+				setGreeting(_greeting);
+			}
+		}
+
+		getGreeting(greeterContract);
+	}, [greeterContract, greeting]);
+
+	async function deployGreeterContract(signer: Signer): Promise<void> {
+		const Greeter = new ethers.ContractFactory(
+			VestedPairFactoryJson.abi,
+			VestedPairFactoryJson.bytecode,
+			signer
+		);
+
+		try {
+			const greeterContract = await Greeter.deploy();
+
+			await greeterContract.deployed();
+
+			const greeting = await greeterContract.createOrderBook(
+				[], // _recipients
+				[], // _amounts
+				60, // _cliffTime
+				120, // _vestingTime
+				"0x0000000000000000000000000000000000001010" // equityTokenAddress
+			);
+
+			setGreeterContract(greeterContract);
+			setGreeting(greeting);
+
+			window.alert(`Greeter deployed to: ${greeterContract.address}`);
+
+			setGreeterContractAddr(greeterContract.address);
+		} catch (error: any) {
+			window.alert("Error!" + (error && error.message ? `\n\n${error.message}` : ""));
+		}
+	}
+
+	function handleGreetingChange(event: any): void {
+		event.preventDefault();
+		setGreetingInput(event.target.value);
+	}
+
+	function handleGreetingSubmit(event: any): void {
+		event.preventDefault();
+
+		if (!greeterContract) {
+			window.alert("Undefined greeterContract");
+			return;
+		}
+
+		if (!greetingInput) {
+			window.alert("Greeting cannot be empty");
+			return;
+		}
+
+		async function submitGreeting(greeterContract: Contract): Promise<void> {
+			try {
+				const setGreetingTxn = await greeterContract.setGreeting(greetingInput);
+
+				await setGreetingTxn.wait();
+
+				const newGreeting = await greeterContract.greet();
+				window.alert(`Success!\n\nGreeting is now: ${newGreeting}`);
+
+				if (newGreeting !== greeting) {
+					setGreeting(newGreeting);
+				}
+			} catch (error: any) {
+				window.alert("Error!" + (error && error.message ? `\n\n${error.message}` : ""));
+			}
+		}
+
+		submitGreeting(greeterContract);
+	}
+
 	return (
 		<PageWrapper>
 			<Navigation />
@@ -93,6 +196,14 @@ const Home: NextPage = () => {
 						</Heading>
 					</InnerColumn>
 				</div>
+
+				<Button
+					onClick={() => {
+						provider?.getSigner() && deployGreeterContract(provider?.getSigner());
+					}}
+				>
+					execute
+				</Button>
 
 				<Section>
 					<InnerColumn width="third">
