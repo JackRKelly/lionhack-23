@@ -100,7 +100,9 @@ export const Navigation = () => {
 		<RootWrapper>
 			<NavigationPrimitive.Root>
 				<NavigationPrimitive.Item>
-					<NavigationPrimitive.NextLink href="/">Home</NavigationPrimitive.NextLink>
+					<NavigationPrimitive.NextLink href="/" className="!font-bold">
+						Vestera
+					</NavigationPrimitive.NextLink>
 				</NavigationPrimitive.Item>
 
 				<NavigationPrimitive.Item>
