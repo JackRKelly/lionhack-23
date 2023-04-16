@@ -35,7 +35,7 @@ const chainInfo: ChainInfo = {
 	42161: {
 		icon: <Arbitrum className={cryptoIconClassName} />
 	},
-	31337: {
+	1337: {
 		icon: <Arbitrum className={cryptoIconClassName} />
 	}
 };
@@ -188,12 +188,12 @@ export const Navigation = () => {
 						/>
 						<Dropdown.CheckboxItem
 							label={
-								<span className={activeChainId === 31337 ? "font-bold" : ""}>Arbitrum test</span>
+								<span className={activeChainId === 1337 ? "font-bold" : ""}>Arbitrum test</span>
 							}
 							icon={<Arbitrum className={iconClassName} />}
-							checked={desiredChainId === 31337}
+							checked={desiredChainId === 1337}
 							onCheckedChange={(value) => {
-								if (value) setDesiredChainId(31337);
+								if (value) setDesiredChainId(1337);
 							}}
 						/>
 					</Dropdown.Root>

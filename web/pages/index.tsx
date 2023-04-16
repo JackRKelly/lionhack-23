@@ -104,13 +104,21 @@ const Home: NextPage = () => {
 			await greeterContract.deployed();
 
 			const greeting = await greeterContract.createOrderBook(
-				[], // _recipients
-				[], // _amounts
-				60, // _cliffTime
-				120, // _vestingTime
-				"0x0000000000000000000000000000000000001010" // equityTokenAddress
+				10000, // _recipients
+				"GUH", // _amounts
+				"GUH", // _cliffTime
+				["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"], // equityTokenAddress
+				[100],
+				10,
+				20
 			);
-
+			// uint256 equityTokenInitialSupply, // supply of tokens in ether
+			// string memory equityTokenName,
+			// string memory equityTokenSymbol,
+			// address[] memory recipients,
+			// uint256[] memory amounts,
+			// uint256 cliffTime,
+			// uint256 vestingTime
 			setGreeterContract(greeterContract);
 			setGreeting(greeting);
 

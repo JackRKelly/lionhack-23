@@ -132,7 +132,7 @@ export const TESTNET_CHAINS: ChainConfig = {
 		nativeCurrency: CELO,
 		blockExplorerUrls: ["https://alfajores-blockscout.celo-testnet.org"]
 	},
-	31337: {
+	1337: {
 		urls: ["http://127.0.0.1:8545"],
 		name: "guh",
 		nativeCurrency: CELO,
