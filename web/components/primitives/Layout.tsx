@@ -33,7 +33,7 @@ export const PageWrapper = (props: PropsWithChildren) => {
 	const { children } = props;
 
 	return (
-		<div className="py-[70px] relative">
+		<div className="py-[72px] relative">
 			{children}
 			<div className="absolute top-0 bottom-0 left-0 right-0 -z-10">
 				<svg className="w-full h-full opacity-5">

@@ -10,6 +10,7 @@ import { tw } from "../utils/tw";
 import { Arbitrum } from "./icons/Arbitrum";
 import { Avalanch } from "./icons/Avalanch";
 import { EthereumIcon } from "./icons/Ethereum";
+import { GanacheIcon } from "./icons/Ganache";
 import { Button } from "./primitives/Button";
 import * as NavigationPrimitive from "./primitives/Navigation";
 import { ThemeSwitcher } from "./ThemeSwitcher";
@@ -37,7 +38,7 @@ const chainInfo: ChainInfo = {
 		icon: <Arbitrum className={cryptoIconClassName} />
 	},
 	1337: {
-		icon: <Arbitrum className={cryptoIconClassName} />
+		icon: <GanacheIcon className={cryptoIconClassName} />
 	}
 };
 
@@ -173,10 +174,8 @@ export const Navigation = () => {
 							}}
 						/>
 						<Dropdown.CheckboxItem
-							label={
-								<span className={activeChainId === 1337 ? "font-bold" : ""}>Arbitrum TestNet</span>
-							}
-							icon={<Arbitrum className={iconClassName} />}
+							label={<span className={activeChainId === 1337 ? "font-bold" : ""}>Ganache</span>}
+							icon={<GanacheIcon className={iconClassName} />}
 							checked={desiredChainId === 1337}
 							onCheckedChange={(value) => {
 								if (value) setDesiredChainId(1337);

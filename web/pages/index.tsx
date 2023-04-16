@@ -172,8 +172,8 @@ const Home: NextPage = () => {
 
 					<InnerColumn className="py-10 md:py-20 lg:scroll-py-32">
 						<Heading className="relative !text-white text-center" size="xxl" weight="semibold">
-							The future of <br />
-							ownership
+							Unleashing digital <br />
+							equity potential
 						</Heading>
 					</InnerColumn>
 				</div>
