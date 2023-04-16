@@ -63,16 +63,6 @@ export const Navigation = () => {
 	const balances = useBalances(provider, accounts);
 
 	useEffect(() => {
-		if (error !== undefined) {
-			console.error(error);
-		}
-	}, [error]);
-
-	useEffect(() => {
-		console.log(activeChainId);
-	}, [activeChainId]);
-
-	useEffect(() => {
 		if (activeChainId && (!desiredChainId || desiredChainId === -1)) {
 			setDesiredChainId(activeChainId);
 		}
@@ -184,7 +174,7 @@ export const Navigation = () => {
 						/>
 						<Dropdown.CheckboxItem
 							label={
-								<span className={activeChainId === 1337 ? "font-bold" : ""}>Arbitrum test</span>
+								<span className={activeChainId === 1337 ? "font-bold" : ""}>Arbitrum TestNet</span>
 							}
 							icon={<Arbitrum className={iconClassName} />}
 							checked={desiredChainId === 1337}
