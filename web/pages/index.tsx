@@ -132,7 +132,7 @@ const Home: NextPage = () => {
 			setGreeterContract(greeterContract);
 			setGreeting(greeting);
 
-			toast.success(`Vested Pair Factory created!`);
+			toast.success(`Vested Pair created!`);
 
 			setGreeterContractAddr(greeterContract.address);
 		} catch (error: any) {
@@ -200,7 +200,7 @@ const Home: NextPage = () => {
 						</ColumnWrapper>
 
 						<div className="mt-8">
-							<Heading>Create Vested Pair Factory</Heading>
+							<Heading>Create Vested Pair</Heading>
 							<form
 								onSubmit={handleSubmit((data) => {
 									provider?.getSigner() && deployGreeterContract(provider?.getSigner(), data);
