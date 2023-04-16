@@ -11,6 +11,7 @@ import { Avalanch } from "./icons/Avalanch";
 import { EthereumIcon } from "./icons/Ethereum";
 import { Button } from "./primitives/Button";
 import * as NavigationPrimitive from "./primitives/Navigation";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 const RootWrapper = tw.div`fixed top-2 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center`;
 
@@ -195,6 +196,10 @@ export const Navigation = () => {
 						</NavigationPrimitive.Text>
 					</NavigationPrimitive.Item>
 				)}
+
+				<NavigationPrimitive.Item>
+					<ThemeSwitcher />
+				</NavigationPrimitive.Item>
 			</NavigationPrimitive.Root>
 		</RootWrapper>
 	);

@@ -36,7 +36,8 @@ export const buttonStyles = cva(
 			size: {
 				md: "px-4 py-2",
 				sm: "px-2 py-2",
-				xs: "px-1 py-1"
+				xs: "px-1 py-1",
+				none: ""
 			},
 			shade: {
 				"none": "",
