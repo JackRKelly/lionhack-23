@@ -32,6 +32,7 @@ contract VestingModule is Ownable {
 
         // Set the vested tokens for each recipient
         for (uint256 i = 0; i < _recipients.length; i++) {
+            addressTokens[_recipients[i]] = VestedTokens(0, 0);
             addressTokens[_recipients[i]].claimableAmount = _amounts[i];
         }
 
@@ -67,7 +68,7 @@ contract VestingModule is Ownable {
             uint256 remainingTokens = userTokens.claimableAmount -
                 userTokens.claimedAmount;
             userTokens.claimedAmount = userTokens.claimableAmount;
-            require(equityToken.transfer(msg.sender, remainingTokens));
+            require(equityToken.transfer(msg.sender, remainingTokens * (1 ether)));
         } else {
             // Calculate the claimable percent and update the claimed amount
             claimablePercent = (elapsedTime * 1e18) / vestingTime;
@@ -77,18 +78,18 @@ contract VestingModule is Ownable {
                 userTokens.claimedAmount;
 
             userTokens.claimedAmount = claimableAmount;
-            require(equityToken.transfer(msg.sender, unclaimedAmount));
+            require(equityToken.transfer(msg.sender, unclaimedAmount * (1 ether)));
         }
     }
 
-    function terminateVesting(address personAddress) public onlyOwner {
+    function terminateVesting(address personAddress) public payable onlyOwner {
         require(addressTokens[personAddress].claimableAmount != addressTokens[personAddress].claimedAmount);
         VestedTokens storage userTokens = addressTokens[personAddress];
         uint256 currentTime = block.timestamp;
         uint256 elapsedTime = currentTime - startTime;
         uint256 claimablePercent;
         if (startTime + cliffTime > currentTime) {
-            require(equityToken.transfer(owner(), userTokens.claimableAmount));
+            require(equityToken.transfer(owner(), userTokens.claimableAmount * (1 ether)));
         }
         else {
             claimablePercent = (elapsedTime * 1e18) / vestingTime;
@@ -98,7 +99,7 @@ contract VestingModule is Ownable {
                 userTokens.claimedAmount;
             
             userTokens.claimedAmount = claimableAmount;
-            require(equityToken.transfer(personAddress, unclaimedAmount) && equityToken.transfer(owner(), userTokens.claimableAmount - userTokens.claimedAmount));
+            require(equityToken.transfer(personAddress, unclaimedAmount * (1 ether)) && equityToken.transfer(owner(), userTokens.claimableAmount - userTokens.claimedAmount * (1 ether)));
         }
     }
 }
