@@ -1,14 +1,21 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { Contract, ethers, Signer } from "ethers";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import VestedPairFactoryJson from "../../artifacts/contracts/VestedPairFactory.sol/VestedPairFactory.json";
+import { ErrorMessage } from "../components/ErrorMessage";
 import { Navigation } from "../components/Navigation";
 import { Button } from "../components/primitives/Button";
 import { Heading } from "../components/primitives/Heading";
 import { Image } from "../components/primitives/Image";
+import { inputStyles } from "../components/primitives/Input";
+import { Label } from "../components/primitives/Label";
 import { InnerColumn, OuterColumn, PageWrapper, Section } from "../components/primitives/Layout";
 import { hooks } from "../utils/metaMask";
+import { VestedPairFactoryPayload, VestedPairFactorySchema } from "../utils/schema";
 import { tw } from "../utils/tw";
 
 const Column = tw.div`flex-1`;
@@ -20,6 +27,11 @@ const ColumnWrapper = tw.div`flex flex-row gap-4`;
 const ColumnOfferItem = tw.div`block pb-1 border-b border-primitive-edge-faint last:pb-0 last:border-b-0`;
 
 const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
+	const [count] = useState(Math.ceil(Math.random() * 5));
+	const [cost] = useState((Math.random() * 5).toFixed(2));
+	const [totalCost] = useState((Math.random() * 50).toFixed(2));
+	const [volume] = useState((Math.random() * 0.08).toFixed(2));
+
 	return (
 		<ColumnOfferItem>
 			<div className="border-r border-primitive-edge inline-flex flex-row items-center mr-2 pr-2 w-14">
@@ -27,7 +39,7 @@ const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 					className="text-xl font-semibold tracking-tight text-primitive-type"
 					suppressHydrationWarning
 				>
-					{Math.ceil(Math.random() * 5)}
+					{count}
 					<span className="text-base ml-px text-primitive-type">x</span>
 				</span>
 			</div>
@@ -35,7 +47,7 @@ const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 				<div>
 					<span className="text-xs align-super text-primitive-type">$</span>
 					<div className="text-xl inline-block text-primitive-type" suppressHydrationWarning>
-						{(Math.random() * 5).toFixed(2)}
+						{cost}
 					</div>
 					<span className="text-xs text-primitive-type-faint">
 						<span className="mx-0.5">/</span> token
@@ -51,10 +63,10 @@ const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 						className={clsx("text-xl inline-block", isBuy ? "text-red-600" : "text-green-600")}
 						suppressHydrationWarning
 					>
-						{(Math.random() * 50).toFixed(2)}
+						{totalCost}
 					</div>
 					<span className="text-primitive-type-extra-faint font-light mx-1">/</span>
-					<span suppressHydrationWarning>{(Math.random() * 0.08).toFixed(2)} Volume</span>
+					<span suppressHydrationWarning>{volume} Volume</span>
 				</span>
 			</div>
 		</ColumnOfferItem>
@@ -62,7 +74,7 @@ const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
 };
 
 const Home: NextPage = () => {
-	const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider, useENSNames } = hooks;
+	const { useProvider } = hooks;
 
 	const [signer, setSigner] = useState<Signer>();
 	const [greeterContract, setGreeterContract] = useState<Contract>();
@@ -71,27 +83,31 @@ const Home: NextPage = () => {
 	const [greetingInput, setGreetingInput] = useState<string>("");
 	const provider = useProvider();
 
+	const {
+		register,
+		handleSubmit,
+		formState: { errors }
+	} = useForm<VestedPairFactoryPayload>({
+		defaultValues: {
+			amounts: "[0]",
+			cliffTime: 30,
+			equityTokenInitialSupply: 10000,
+			equityTokenName: "HUC",
+			recipients: "[0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266]",
+			vestingTime: 30,
+			equityTokenSymbol: "HUC"
+		},
+		resolver: zodResolver(VestedPairFactorySchema)
+	});
+
 	useEffect((): void => {
 		setSigner(provider?.getSigner());
 	}, [provider]);
 
-	useEffect((): void => {
-		if (!greeterContract) {
-			return;
-		}
-
-		async function getGreeting(greeterContract: Contract): Promise<void> {
-			const _greeting = await greeterContract.greet();
-
-			if (_greeting !== greeting) {
-				setGreeting(_greeting);
-			}
-		}
-
-		getGreeting(greeterContract);
-	}, [greeterContract, greeting]);
-
-	async function deployGreeterContract(signer: Signer): Promise<void> {
+	async function deployGreeterContract(
+		signer: Signer,
+		payload: VestedPairFactoryPayload
+	): Promise<void> {
 		const Greeter = new ethers.ContractFactory(
 			VestedPairFactoryJson.abi,
 			VestedPairFactoryJson.bytecode,
@@ -103,70 +119,24 @@ const Home: NextPage = () => {
 
 			await greeterContract.deployed();
 
-			const greeting = await greeterContract.createOrderBook(
-				10000, // _recipients
-				"GUH", // _amounts
-				"GUH", // _cliffTime
-				["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"], // equityTokenAddress
-				[100],
-				10,
-				20
-			);
-			// uint256 equityTokenInitialSupply, // supply of tokens in ether
-			// string memory equityTokenName,
-			// string memory equityTokenSymbol,
-			// address[] memory recipients,
-			// uint256[] memory amounts,
-			// uint256 cliffTime,
-			// uint256 vestingTime
+			const greeting = await greeterContract.createOrderBook(payload);
 			setGreeterContract(greeterContract);
 			setGreeting(greeting);
 
-			window.alert(`Greeter deployed to: ${greeterContract.address}`);
+			toast.success(`Greeter deployed to: ${greeterContract.address}`);
 
 			setGreeterContractAddr(greeterContract.address);
 		} catch (error: any) {
-			window.alert("Error!" + (error && error.message ? `\n\n${error.message}` : ""));
+			console.error("Error!" + (error && error.message ? `\n\n${error.message}` : ""));
+			toast.error("An error has occurred, please try again");
 		}
 	}
 
-	function handleGreetingChange(event: any): void {
-		event.preventDefault();
-		setGreetingInput(event.target.value);
-	}
-
-	function handleGreetingSubmit(event: any): void {
-		event.preventDefault();
-
-		if (!greeterContract) {
-			window.alert("Undefined greeterContract");
-			return;
+	useEffect(() => {
+		if (errors) {
+			console.log(errors);
 		}
-
-		if (!greetingInput) {
-			window.alert("Greeting cannot be empty");
-			return;
-		}
-
-		async function submitGreeting(greeterContract: Contract): Promise<void> {
-			try {
-				const setGreetingTxn = await greeterContract.setGreeting(greetingInput);
-
-				await setGreetingTxn.wait();
-
-				const newGreeting = await greeterContract.greet();
-				window.alert(`Success!\n\nGreeting is now: ${newGreeting}`);
-
-				if (newGreeting !== greeting) {
-					setGreeting(newGreeting);
-				}
-			} catch (error: any) {
-				window.alert("Error!" + (error && error.message ? `\n\n${error.message}` : ""));
-			}
-		}
-
-		submitGreeting(greeterContract);
-	}
+	}, [errors]);
 
 	return (
 		<PageWrapper>
@@ -205,14 +175,6 @@ const Home: NextPage = () => {
 					</InnerColumn>
 				</div>
 
-				<Button
-					onClick={() => {
-						provider?.getSigner() && deployGreeterContract(provider?.getSigner());
-					}}
-				>
-					execute
-				</Button>
-
 				<Section>
 					<InnerColumn width="third">
 						<ColumnWrapper>
@@ -233,6 +195,72 @@ const Home: NextPage = () => {
 								</ColumnInner>
 							</Column>
 						</ColumnWrapper>
+
+						<div className="mt-8">
+							<Heading>Create Vested Pair Factory</Heading>
+							<form
+								onSubmit={handleSubmit((data) => {
+									provider?.getSigner() && deployGreeterContract(provider?.getSigner(), data);
+								})}
+							>
+								<div className="my-2 grid grid-flow-row-dense grid-cols-4 gap-5">
+									<div className="col-span-2 md:col-span-1">
+										<Label>equityTokenInitialSupply</Label>
+										<input {...register("equityTokenInitialSupply")} className={inputStyles()} />
+										{errors.equityTokenInitialSupply?.message && (
+											<ErrorMessage>{errors.equityTokenInitialSupply?.message}</ErrorMessage>
+										)}
+									</div>
+									<div className="col-span-2 md:col-span-1">
+										<Label>equityTokenName</Label>
+										<input {...register("equityTokenName")} className={inputStyles()} />
+										{errors.equityTokenName?.message && (
+											<ErrorMessage>{errors.equityTokenName?.message}</ErrorMessage>
+										)}
+									</div>
+									<div className="col-span-2 md:col-span-1">
+										<Label>equityTokenSymbol</Label>
+										<input {...register("equityTokenSymbol")} className={inputStyles()} />
+										{errors.equityTokenSymbol?.message && (
+											<ErrorMessage>{errors.equityTokenSymbol?.message}</ErrorMessage>
+										)}
+									</div>
+									<div className="col-span-2 md:col-span-1">
+										<Label>recipients</Label>
+										<input {...register("recipients")} className={inputStyles()} />
+										{errors.recipients?.message && (
+											<ErrorMessage>{errors.recipients?.message}</ErrorMessage>
+										)}
+									</div>
+									<div className="col-span-2 md:col-span-1">
+										<Label>amounts</Label>
+										<input {...register("amounts")} className={inputStyles()} />
+										{errors.amounts?.message && (
+											<ErrorMessage>{errors.amounts?.message}</ErrorMessage>
+										)}
+									</div>
+									<div className="col-span-2 md:col-span-1">
+										<Label>cliffTime</Label>
+										<input {...register("cliffTime")} className={inputStyles()} />
+										{errors.cliffTime?.message && (
+											<ErrorMessage>{errors.cliffTime?.message}</ErrorMessage>
+										)}
+									</div>
+									<div className="col-span-2 md:col-span-1">
+										<Label>vestingTime</Label>
+										<input {...register("vestingTime")} className={inputStyles()} />
+										{errors.vestingTime?.message && (
+											<ErrorMessage>{errors.vestingTime?.message}</ErrorMessage>
+										)}
+									</div>
+								</div>
+								<div className="flex flex-row justify-end">
+									<Button type="submit" shade="primary">
+										Create
+									</Button>
+								</div>
+							</form>
+						</div>
 					</InnerColumn>
 				</Section>
 			</OuterColumn>

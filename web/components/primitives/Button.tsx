@@ -4,17 +4,17 @@ import Link from "next/link";
 import React from "react";
 
 type LinkProps = {
-	type: "link";
+	variant: "link";
 } & React.ComponentProps<"a"> &
 	VariantProps<typeof buttonStyles>;
 
 type ButtonProps = {
-	type?: "button";
+	variant?: "button";
 } & React.ComponentProps<"button"> &
 	VariantProps<typeof buttonStyles>;
 
 type NextLinkProps = {
-	type: "next-link";
+	variant: "next-link";
 } & React.ComponentProps<typeof Link> &
 	VariantProps<typeof buttonStyles>;
 

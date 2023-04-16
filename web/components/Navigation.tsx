@@ -1,6 +1,7 @@
 import { formatEther } from "@ethersproject/units";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import * as Dropdown from "../components/primitives/Dropdown";
 import { useBalances } from "../hooks/useBalances";
 import { getAddChainParameters } from "../utils/chains";
@@ -56,18 +57,10 @@ export const Navigation = () => {
 
 	const isActive = useIsActive();
 	const provider = useProvider();
-	const ENSNames = useENSNames(provider);
 
 	const [error, setError] = useState<Error | undefined>(undefined);
 
 	const balances = useBalances(provider, accounts);
-
-	// attempt to connect eagerly on mount
-	useEffect(() => {
-		// void metaMask.connectEagerly().catch(() => {
-		// 	console.debug("Failed to connect eagerly to metamask");
-		// });
-	}, []);
 
 	useEffect(() => {
 		if (error !== undefined) {
@@ -103,8 +96,10 @@ export const Navigation = () => {
 				await metaMask.activate(getAddChainParameters(desiredChainId));
 
 				setError(undefined);
+				toast.success("You have connected.");
 			} catch (error) {
 				setError(error as Error);
+				toast.error("Failed to switch chains, try again.");
 			}
 		},
 		[metaMask, activeChainId, setError]
@@ -134,6 +129,7 @@ export const Navigation = () => {
 										void metaMask.resetState();
 									}
 									setDesiredChainId(1);
+									toast.success("You have disconnected.");
 								}}
 							>
 								Disconnect
