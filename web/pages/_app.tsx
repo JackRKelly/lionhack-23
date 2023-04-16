@@ -10,7 +10,8 @@ const App: AppType = ({ Component, pageProps }) => (
 		<Toaster
 			position="bottom-right"
 			toastOptions={{
-				className: "border border-primitive-edge bg-primitive"
+				duration: 4000,
+				className: "border border-primitive-edge !bg-primitive !text-primitive-type"
 			}}
 		/>
 	</Tooltip.Provider>
