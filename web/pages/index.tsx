@@ -27,7 +27,7 @@ const ColumnWrapper = tw.div`flex flex-row gap-4`;
 const ColumnOfferItem = tw.div`block pb-1 border-b border-primitive-edge-faint last:pb-0 last:border-b-0`;
 
 const ColumnItem = ({ isBuy = false }: { isBuy?: boolean }) => {
-	const [count] = useState(Math.ceil(Math.random() * 5));
+	const [count] = useState(Math.ceil(Math.random() * 10));
 	const [cost] = useState((Math.random() * 5).toFixed(2));
 	const [totalCost] = useState((Math.random() * 50).toFixed(2));
 	const [volume] = useState((Math.random() * 0.08).toFixed(2));
@@ -119,11 +119,20 @@ const Home: NextPage = () => {
 
 			await greeterContract.deployed();
 
-			const greeting = await greeterContract.createOrderBook(payload);
+			// const greeting = await greeterContract.createOrderBook(...Object.values(payload));
+			const greeting = await greeterContract.createOrderBook(
+				10000,
+				"GUH",
+				"GUH",
+				["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"],
+				[100],
+				10,
+				20
+			);
 			setGreeterContract(greeterContract);
 			setGreeting(greeting);
 
-			toast.success(`Greeter deployed to: ${greeterContract.address}`);
+			toast.success(`Vested Pair Factory created!`);
 
 			setGreeterContractAddr(greeterContract.address);
 		} catch (error: any) {
@@ -131,12 +140,6 @@ const Home: NextPage = () => {
 			toast.error("An error has occurred, please try again");
 		}
 	}
-
-	useEffect(() => {
-		if (errors) {
-			console.log(errors);
-		}
-	}, [errors]);
 
 	return (
 		<PageWrapper>
@@ -205,49 +208,49 @@ const Home: NextPage = () => {
 							>
 								<div className="my-2 grid grid-flow-row-dense grid-cols-4 gap-5">
 									<div className="col-span-2 md:col-span-1">
-										<Label>equityTokenInitialSupply</Label>
+										<Label>Equity Token Initial Supply</Label>
 										<input {...register("equityTokenInitialSupply")} className={inputStyles()} />
 										{errors.equityTokenInitialSupply?.message && (
 											<ErrorMessage>{errors.equityTokenInitialSupply?.message}</ErrorMessage>
 										)}
 									</div>
 									<div className="col-span-2 md:col-span-1">
-										<Label>equityTokenName</Label>
+										<Label>Equity Token Name</Label>
 										<input {...register("equityTokenName")} className={inputStyles()} />
 										{errors.equityTokenName?.message && (
 											<ErrorMessage>{errors.equityTokenName?.message}</ErrorMessage>
 										)}
 									</div>
 									<div className="col-span-2 md:col-span-1">
-										<Label>equityTokenSymbol</Label>
+										<Label>Equity Token Symbol</Label>
 										<input {...register("equityTokenSymbol")} className={inputStyles()} />
 										{errors.equityTokenSymbol?.message && (
 											<ErrorMessage>{errors.equityTokenSymbol?.message}</ErrorMessage>
 										)}
 									</div>
 									<div className="col-span-2 md:col-span-1">
-										<Label>recipients</Label>
+										<Label>Recipients</Label>
 										<input {...register("recipients")} className={inputStyles()} />
 										{errors.recipients?.message && (
 											<ErrorMessage>{errors.recipients?.message}</ErrorMessage>
 										)}
 									</div>
 									<div className="col-span-2 md:col-span-1">
-										<Label>amounts</Label>
+										<Label>Amounts</Label>
 										<input {...register("amounts")} className={inputStyles()} />
 										{errors.amounts?.message && (
 											<ErrorMessage>{errors.amounts?.message}</ErrorMessage>
 										)}
 									</div>
 									<div className="col-span-2 md:col-span-1">
-										<Label>cliffTime</Label>
+										<Label>Cliff Time</Label>
 										<input {...register("cliffTime")} className={inputStyles()} />
 										{errors.cliffTime?.message && (
 											<ErrorMessage>{errors.cliffTime?.message}</ErrorMessage>
 										)}
 									</div>
 									<div className="col-span-2 md:col-span-1">
-										<Label>vestingTime</Label>
+										<Label>Vesting Time</Label>
 										<input {...register("vestingTime")} className={inputStyles()} />
 										{errors.vestingTime?.message && (
 											<ErrorMessage>{errors.vestingTime?.message}</ErrorMessage>
